@@ -221,4 +221,14 @@ class AppIcon {
       width: width,
     );
   }
+
+  Widget getBackIcon(
+      {required Color color, required double height, required double width}) {
+    return SvgPicture.asset(
+      'assets/svg/back-icon.svg',
+      colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+      height: height,
+      width: width,
+    );
+  }
 }
