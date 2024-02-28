@@ -21,6 +21,7 @@ class SpecificSchedulePageHeader extends StatefulWidget
   final Size preferredSize;
 
   @override
+  // ignore: library_private_types_in_public_api
   _SpecificSchedulePageHeaderState createState() =>
       _SpecificSchedulePageHeaderState();
 }
