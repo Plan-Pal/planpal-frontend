@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../test/mock/mock_api_service.dart';
+import 'package:planpal_frontend/api/mock_api_service.dart';
 import 'package:planpal_frontend/themes/colors.dart';
-import 'package:planpal_frontend/widgets/common/home_page/calendar/home_calendar.dart';
-import 'package:planpal_frontend/widgets/common/home_page/schedule/simple_schedule_info.dart';
-import 'package:planpal_frontend/widgets/common/home_page/schedule/home_shcedule_list_header.dart';
+import 'package:planpal_frontend/widgets/common/calendar/home_calendar.dart';
+import 'package:planpal_frontend/widgets/common/schedule/simple_schedule_info.dart';
+import 'package:planpal_frontend/widgets/common/schedule/home_shcedule_list_header.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
