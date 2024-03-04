@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
-import 'package:planpal_frontend/models/login_info.dart';
+import 'package:planpal_frontend/models/login_request.dart';
 
 class KakaoApi {
   Future<bool> callKakaoLogin() async {
@@ -23,10 +23,10 @@ class KakaoApi {
     }
   }
 
-  Future<LoginInfo> getUserInfo() async {
+  Future<LoginRequest> getUserInfo() async {
     try {
       User user = await UserApi.instance.me();
-      return LoginInfo(
+      return LoginRequest(
           kakaoId: user.id, nickname: user.kakaoAccount?.profile?.nickname);
     } catch (error) {
       rethrow;
