@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:planpal_frontend/models/login_info.dart';
-import 'package:planpal_frontend/models/login_result.dart';
-import 'package:planpal_frontend/providers/user_provider.dart';
+import 'package:planpal_frontend/models/login_request.dart';
+import 'package:planpal_frontend/models/login_response.dart';
+import 'package:planpal_frontend/api/user_api_service.dart';
 
 import 'package:planpal_frontend/themes/colors.dart';
 import 'package:planpal_frontend/themes/fonts.dart';
-import 'package:planpal_frontend/providers/kakao_api.dart';
+import 'package:planpal_frontend/api/kakao_api.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
 
-  KakaoApi kakaoApi = KakaoApi();
-  UserProvider userProvider = UserProvider();
+  final KakaoApi kakaoApi = KakaoApi();
+  final UserApiService userProvider = UserApiService();
   static const storage = FlutterSecureStorage();
 
   @override
@@ -80,8 +80,8 @@ class LoginScreen extends StatelessWidget {
             return;
           }
 
-          LoginInfo loginInfo = await kakaoApi.getUserInfo();
-          LoginResult loginResult = await userProvider.signUp(loginInfo);
+          LoginRequest loginInfo = await kakaoApi.getUserInfo();
+          LoginResponse loginResult = await userProvider.signUp(loginInfo);
           // 수정 필요
           await storage.write(
               key: 'accessToken', value: loginResult.accessToken);
