@@ -39,6 +39,7 @@ class MockApiService implements ApiService {
     };
   }
 
+  @override
   Future<Map<String, dynamic>> getInvitedSchedules() async {
     return {
       "is_success": true,
@@ -72,7 +73,8 @@ class MockApiService implements ApiService {
     };
   }
 
-  Future<Map<String, dynamic>> getAddedchedules() async {
+  @override
+  Future<Map<String, dynamic>> getAddedSchedules() async {
     return {
       "is_success": true,
       "code": "COMMON200",
@@ -90,6 +92,30 @@ class MockApiService implements ApiService {
             "short_title": "짧은제목2",
             "title": "프로젝트 회의33",
             "appointed_time": "2024-02-22T10:30:00",
+            "place": "회의실 A33"
+          },
+          {
+            "short_title": "짧은제목3",
+            "title": "초대일정수락테스트",
+            "appointed_time": "2024-03-24T13:30:00",
+            "place": "회의실 A33"
+          },
+          {
+            "short_title": "짧은제목3",
+            "title": "초대일정수락테스트",
+            "appointed_time": "2024-03-24T13:30:00",
+            "place": "회의실 A33"
+          },
+          {
+            "short_title": "짧은제목3",
+            "title": "초대일정수락테스트",
+            "appointed_time": "2024-03-24T13:30:00",
+            "place": "회의실 A33"
+          },
+          {
+            "short_title": "짧은제목3",
+            "title": "초대일정수락테스트",
+            "appointed_time": "2024-03-24T13:30:00",
             "place": "회의실 A33"
           },
           {
