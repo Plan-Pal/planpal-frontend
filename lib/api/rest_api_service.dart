@@ -15,4 +15,26 @@ class RealApiService extends ApiService {
       throw Exception('Failed to load schedules');
     }
   }
+
+  @override
+  Future<Map<String, dynamic>> getInvitedSchedules() async {
+    final response = await http.get(Uri.parse('$_baseUrl/schedules/invited'));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load invited schedules');
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> getAddedSchedules() async {
+    final response = await http.get(Uri.parse('$_baseUrl/schedules'));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load invited schedules');
+    }
+  }
 }
