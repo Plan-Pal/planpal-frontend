@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:planpal_frontend/themes/colors.dart';
-import 'package:planpal_frontend/widgets/common/home_page/calendar/days_grid.dart';
-import 'package:planpal_frontend/widgets/common/home_page/calendar/month_app_bar.dart';
-import 'package:planpal_frontend/widgets/common/home_page/calendar/week_days_row.dart';
+import 'package:planpal_frontend/widgets/common/calendar/days_grid.dart';
+import 'package:planpal_frontend/widgets/common/calendar/month_app_bar.dart';
+import 'package:planpal_frontend/widgets/common/calendar/week_days_row.dart';
 
 class CustomCalendar extends StatefulWidget {
   final ValueChanged<DateTime> onDateSelected;
