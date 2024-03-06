@@ -128,4 +128,30 @@ class MockApiService implements ApiService {
       }
     };
   }
+
+  @override
+  Future<Map<String, dynamic>> getSpecificSchedule(int scheduleNumber) async {
+    return {
+      "is_success": true,
+      "code": "COMMON200",
+      "message": "성공입니다",
+      "result": {
+        "short_title": "초대 일정",
+        "long_title": "초대일정수락테스트",
+        "memo": "프로젝트 진행 상황 논의33",
+        "appointed_time": "2024-02-24T13:30:00",
+        "place": "회의실 A33",
+        "schedule_state": "PUBLIC",
+        "participating_user_list": [
+          {"user_nickname": "테스터1"},
+          {"user_nickname": "테스터2"},
+          {"user_nickname": "테스터3"},
+          {"user_nickname": "테스터4"},
+          {"user_nickname": "테스터5"},
+          {"user_nickname": "테스터6"},
+          {"user_nickname": "테스터7"}
+        ]
+      }
+    };
+  }
 }
