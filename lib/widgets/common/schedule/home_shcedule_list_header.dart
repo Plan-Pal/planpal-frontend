@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
+import 'package:planpal_frontend/screens/add_schedule_screen.dart';
 import 'package:planpal_frontend/themes/colors.dart';
 import 'package:planpal_frontend/themes/fonts.dart';
 import 'package:planpal_frontend/themes/icons.dart';
@@ -38,8 +39,13 @@ class _AnotherWidgetState extends State<AnotherWidget> {
             IconButton(
               padding: const EdgeInsets.only(right: 5),
               icon: AppIcon().getPlusIcon(
-                  color: AppColors.darkGray, height: 20, width: 18), // 인수 이름 명시
-              onPressed: () {},
+                  color: AppColors.darkGray, height: 20, width: 18),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AddScheduleScreen()));
+              },
             ),
           ],
         ),
