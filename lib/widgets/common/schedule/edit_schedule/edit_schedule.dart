@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:planpal_frontend/themes/colors.dart';
 import 'package:planpal_frontend/themes/fonts.dart';
+import 'package:planpal_frontend/widgets/common/calendar/edit_schedule_calendar/edit_schedule_calendar.dart';
+import 'package:planpal_frontend/widgets/common/schedule/edit_schedule/change_personnel.dart';
+import 'package:planpal_frontend/widgets/common/schedule/edit_schedule/text_inputer.dart';
+import 'package:planpal_frontend/widgets/common/schedule/edit_schedule/time_picker.dart';
 
 class EditSchedule extends StatefulWidget {
   @override
@@ -25,11 +29,11 @@ class _EditScheduleState extends State<EditSchedule> {
   }
 
   SizedBox spaceshort() {
-    return const SizedBox(height: 5);
+    return SizedBox(height: 5);
   }
 
   SizedBox spaceLong() {
-    return const SizedBox(height: 15);
+    return SizedBox(height: 15);
   }
 
   @override
@@ -42,17 +46,50 @@ class _EditScheduleState extends State<EditSchedule> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               lightStyle('약속 제목'),
+              spaceshort(),
+              TextInputField(
+                labelText: '약속 제목을 입력해주세요',
+                height: 40,
+                maxLength: 20,
+              ),
               spaceLong(),
               lightStyle('짧은 제목'),
+              spaceshort(),
+              TextInputField(
+                labelText: '요약된 약속 제목을 입력해주세요',
+                height: 40,
+                maxLength: 5,
+              ),
               spaceLong(),
               lightStyle('메모'),
+              spaceshort(),
+              TextInputField(
+                labelText: '메모를 입력해주세요',
+                height: 100,
+                maxLines: 100,
+                maxLength: 100,
+              ),
               spaceLong(),
               lightStyle('약속 날짜'),
-              spaceLong(),
+              EditScheduleCalendar(
+                onDateSelected: (date) {},
+                schedules: [],
+              ),
+              SizedBox(height: 25),
               lightStyle('약속 시간'),
+              spaceshort(),
+              TimePicker(),
               spaceLong(),
               lightStyle('약속 장소'),
+              spaceshort(),
+              TextInputField(
+                labelText: '약속 장소를 입력해주세요',
+                height: 40,
+                maxLength: 40,
+              ),
               spaceLong(),
+              LimitlessOption(),
+              const SizedBox(height: 50)
             ],
           ),
         ),
