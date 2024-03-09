@@ -49,4 +49,15 @@ class RealApiService extends ApiService {
       throw Exception('Failed to load invited schedules');
     }
   }
+
+  @override
+  Future<Map<String, dynamic>> getFriendsList() async {
+    final response = await http.get(Uri.parse('$_baseUrl/friends'));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load friends list');
+    }
+  }
 }
