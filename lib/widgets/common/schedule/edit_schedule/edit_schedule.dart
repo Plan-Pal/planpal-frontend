@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:planpal_frontend/themes/colors.dart';
 import 'package:planpal_frontend/themes/fonts.dart';
+import 'package:planpal_frontend/widgets/common/button/schedule_button.dart';
 import 'package:planpal_frontend/widgets/common/calendar/edit_schedule_calendar/edit_schedule_calendar.dart';
 import 'package:planpal_frontend/widgets/common/schedule/edit_schedule/change_personnel.dart';
+import 'package:planpal_frontend/widgets/common/schedule/edit_schedule/schedule_participants/invited_friends_button.dart';
+import 'package:planpal_frontend/widgets/common/schedule/edit_schedule/schedule_participants/schedule_participants_widget.dart';
 import 'package:planpal_frontend/widgets/common/schedule/edit_schedule/text_inputer.dart';
 import 'package:planpal_frontend/widgets/common/schedule/edit_schedule/time_picker.dart';
 
@@ -15,10 +18,12 @@ class _EditScheduleState extends State<EditSchedule> {
   late Future<Map<String, dynamic>> futureSchedule;
   int _count = 0;
   bool _noLimit = false;
+  List<Widget> participants = [];
 
   @override
   void initState() {
     super.initState();
+    participants.add(InviteParticipantsButton());
   }
 
   Text lightStyle(String text) {
@@ -89,6 +94,13 @@ class _EditScheduleState extends State<EditSchedule> {
               ),
               spaceLong(),
               LimitlessOption(),
+              spaceLong(),
+              spaceLong(),
+              AddParticipantsWidget(),
+              spaceLong(),
+              spaceLong(),
+              spaceLong(),
+              scheduleAddButton(),
               const SizedBox(height: 50)
             ],
           ),
