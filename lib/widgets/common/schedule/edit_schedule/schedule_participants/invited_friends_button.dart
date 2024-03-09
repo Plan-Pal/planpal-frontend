@@ -2,30 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:planpal_frontend/themes/colors.dart';
 import 'package:planpal_frontend/themes/icons.dart';
 
-class ProfileContainer extends StatelessWidget {
-  final String nickname;
-
-  ProfileContainer({required this.nickname});
-
+class InviteParticipantsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 3),
       child: Container(
         width: 75,
+        height: 100,
         decoration: BoxDecoration(
           color: AppColors.middleLightGray,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Spacer(flex: 2),
             AppIcon()
-                .getFace2Icon(color: AppColors.darkGray, width: 53, height: 53),
-            Spacer(flex: 2),
-            Text(nickname,
-                style: TextStyle(fontSize: 13, color: AppColors.darkGray)),
-            Spacer(flex: 2),
+                .getPlusIcon(color: AppColors.darkGray, width: 20, height: 20),
           ],
         ),
       ),

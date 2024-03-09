@@ -12,17 +12,25 @@ class AddSchedulePageHeader extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      centerTitle: true,
-      title: Text('약속 만들기',
-          style:
-              AppFonts.interSemiBold(color: AppColors.darkGray, fontsize: 20)),
-      leading: IconButton(
-        icon: AppIcon()
-            .getBackIcon(color: AppColors.darkGray, height: 15, width: 18),
-        onPressed: () {},
+    return Container(
+      height: 60.0,
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          IconButton(
+            icon: AppIcon()
+                .getBackIcon(color: AppColors.darkGray, height: 15, width: 18),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          Text('약속 만들기',
+              style: AppFonts.interSemiBold(
+                  color: AppColors.darkGray, fontsize: 20)),
+          SizedBox(width: 50),
+        ],
       ),
-      actions: const <Widget>[],
     );
   }
 }

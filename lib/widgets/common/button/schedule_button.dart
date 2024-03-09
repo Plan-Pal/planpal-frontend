@@ -8,15 +8,16 @@ Container scheduleEditButton() {
     child: ElevatedButton(
       onPressed: () {},
       style: ElevatedButton.styleFrom(
-        foregroundColor: AppColors.lightPurple,
-        backgroundColor: AppColors.primaryPurple,
-        padding: const EdgeInsets.symmetric(vertical: 15),
+        primary: AppColors.primaryPurple,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
         ),
       ),
-      child: Text('약속 수정',
-          style: AppFonts.interRegular(color: AppColors.white, fontsize: 14)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        child: Text('약속 수정',
+            style: AppFonts.interRegular(color: AppColors.white, fontsize: 14)),
+      ),
     ),
   );
 }
@@ -27,15 +28,36 @@ Container scheduleDeleteButton() {
     child: ElevatedButton(
       onPressed: () {},
       style: ElevatedButton.styleFrom(
-        foregroundColor: AppColors.lightRed,
-        backgroundColor: AppColors.primaryRed,
-        padding: const EdgeInsets.symmetric(vertical: 15),
+        primary: AppColors.primaryRed,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
         ),
       ),
-      child: Text('약속 삭제',
-          style: AppFonts.interRegular(color: AppColors.white, fontsize: 14)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        child: Text('약속 삭제',
+            style: AppFonts.interRegular(color: AppColors.white, fontsize: 14)),
+      ),
+    ),
+  );
+}
+
+Container scheduleAddButton() {
+  return Container(
+    width: 330,
+    child: ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.primaryPurple,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        child: Text('약속 생성 완료',
+            style: AppFonts.interRegular(color: AppColors.white, fontsize: 14)),
+      ),
     ),
   );
 }

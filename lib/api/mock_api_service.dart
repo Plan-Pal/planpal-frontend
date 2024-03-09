@@ -154,4 +154,21 @@ class MockApiService implements ApiService {
       }
     };
   }
+
+  @override
+  Future<Map<String, dynamic>> getFriendsList() async {
+    return {
+      "is_success": true,
+      "code": "COMMON200",
+      "message": "성공입니다",
+      "result": [
+        {"user_id": 1, "nickname": "user2", "tag_id": "6fa5"},
+        {"user_id": 2, "nickname": "user3", "tag_id": "6fa5"},
+        {"user_id": 3, "nickname": "user4", "tag_id": "6fa5"},
+        {"user_id": 4, "nickname": "user5", "tag_id": "6fa5"},
+        {"user_id": 5, "nickname": "user6", "tag_id": "6fa5"},
+        {"user_id": 6, "nickname": "user7", "tag_id": "b709"}
+      ]
+    };
+  }
 }
