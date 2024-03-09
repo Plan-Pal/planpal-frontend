@@ -15,17 +15,20 @@ class ProfilePageHeader extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: false,
+      shape: const Border(
+          bottom: BorderSide(color: AppColors.primaryPurple, width: 0)),
+      backgroundColor: AppColors.primaryPurple,
       title: Row(
         children: <Widget>[
           Text('프로필',
-              style: AppFonts.interSemiBold(
-                  color: AppColors.darkGray, fontsize: 20)),
+              style:
+                  AppFonts.interSemiBold(color: AppColors.white, fontsize: 20)),
         ],
       ),
       actions: <Widget>[
         IconButton(
           icon: AppIcon()
-              .getSettingIcon(color: AppColors.darkGray, height: 20, width: 20),
+              .getSettingIcon(color: AppColors.white, height: 20, width: 20),
           onPressed: () {},
         ),
       ],
