@@ -24,7 +24,7 @@ class ProfileContainer extends StatelessWidget {
                 .getFace2Icon(color: AppColors.darkGray, width: 53, height: 53),
             Spacer(flex: 2),
             Text(nickname,
-                style: TextStyle(fontSize: 15, color: AppColors.darkGray)),
+                style: TextStyle(fontSize: 13, color: AppColors.darkGray)),
             Spacer(flex: 2),
           ],
         ),
