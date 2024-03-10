@@ -13,7 +13,11 @@ class ProfileService {
   UserAuthService userAuthService = UserAuthService();
 
   ProfileService() {
-    dio = Dio(BaseOptions(baseUrl: 'http://172.30.1.32:8080'));
+    dio = Dio(BaseOptions(
+      baseUrl: 'http://172.30.1.30:8080',
+      connectTimeout: const Duration(milliseconds: 5000),
+      receiveTimeout: const Duration(milliseconds: 3000),
+    ));
     _setupInterceptors();
   }
 
@@ -57,12 +61,22 @@ class ProfileService {
   Future<List<FriendModel>> getFriendList() async {
     Response response = await dio.get("/friends");
     List<dynamic> jsonList = response.data['result'];
-    return jsonList.map((json) => FriendModel.fromJson(json)).toList();
+    return jsonList.map((json) => FriendModel.fromJsonList(json)).toList();
   }
 
   Future<List<FriendRequestModel>> getFriendRequestList() async {
     Response response = await dio.get("/friends/request/received");
     List<dynamic> jsonList = response.data['result'];
     return jsonList.map((json) => FriendRequestModel.fromJson(json)).toList();
+  }
+
+  Future<void> deleteFriend(BigInt userId) async {
+    await dio.delete('/friends', data: {'user_id': '$userId'});
+  }
+
+  Future<FriendModel> acceptFriend(BigInt friendRequestId) async {
+    Response response = await dio
+        .post('/friends', data: {'friend_request_id': '$friendRequestId'});
+    return FriendModel.fromJson(response.data);
   }
 }

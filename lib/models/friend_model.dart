@@ -11,10 +11,17 @@ class FriendModel {
     required this.iconId,
   });
 
-  FriendModel.fromJson(Map<String, dynamic>? map) {
+  FriendModel.fromJsonList(Map<String, dynamic>? map) {
     userId = BigInt.from(map?['user_id']);
     nickname = map?['nickname'];
     tagId = map?['tag_id'];
     iconId = map?['icon_id'];
+  }
+
+  FriendModel.fromJson(Map<String, dynamic>? map) {
+    userId = BigInt.from(map?['result']['user_id']);
+    nickname = map?['result']['nickname'];
+    tagId = map?['result']['tag_id'];
+    iconId = map?['result']['icon_id'];
   }
 }

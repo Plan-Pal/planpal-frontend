@@ -13,14 +13,12 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() {
-    return _SplashScreenState();
-  }
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final userAuthService = UserAuthService();
-  final storageService = StorageService();
+  final _userAuthService = UserAuthService();
+  final _storageService = StorageService();
 
   Widget mainPage = const CustomNavigator(
     pages: [
@@ -50,15 +48,15 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<bool> checkLogin() async {
-    JwtModel? savedJwt = await storageService.readJwt();
+    JwtModel? savedJwt = await _storageService.readJwt();
 
     if (savedJwt == null) {
       return false;
     }
 
     try {
-      JwtModel newToken = await userAuthService.refresh(savedJwt: savedJwt);
-      await storageService.writeJwt(newToken);
+      JwtModel newToken = await _userAuthService.refresh(savedJwt: savedJwt);
+      await _storageService.writeJwt(newToken);
       return true;
     } catch (e) {
       return false;

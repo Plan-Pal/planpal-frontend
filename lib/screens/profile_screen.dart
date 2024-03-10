@@ -12,53 +12,58 @@ class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() {
-    return _ProfileScreenState();
-  }
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
   int _selectedIndex = 0;
-  UserModel _user = UserModel(nickname: '닉네임', tagId: '0000', iconId: 1);
-  List<ListItemModel> _friendList = [];
-  List<ListItemModel> _friendRequestList = [];
-  final AppIcon appIcon = AppIcon();
+
+  late UserModel _user;
+  late List<ListItemModel> _friendList;
+  late List<ListItemModel> _friendRequestList;
+
   final ProfileService profileService = ProfileService();
 
-  void onTabSelected(int index) {
+  @override
+  void initState() {
+    super.initState();
+    _user = UserModel(nickname: '닉네임', tagId: '0000', iconId: 1);
+    _friendList = [];
+    _friendRequestList = [];
+    _fetchFromServer();
+  }
+
+  Future<void> _fetchFromServer() async {
+    final user = await profileService.getUserInfo();
+    final friendList = await profileService.getFriendList();
+    final friendRequestList = await profileService.getFriendRequestList();
+    setState(() {
+      _user = user;
+      _friendList = friendList
+          .map((friend) => ListItemModel.fromFriendModel(friend))
+          .toList();
+      _friendRequestList = friendRequestList
+          .map((request) => ListItemModel.fromFriendRequestModel(request))
+          .toList();
+    });
+  }
+
+  void _onTabSelected(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _fetchFromServer();
+  void onRemoveItem(int index) {
+    setState(() {
+      _friendList.removeAt(index);
+    });
   }
 
-  Future<void> _fetchFromServer() async {
-    UserModel fetchedUserModel = await profileService.getUserInfo();
-    List<FriendModel> fetchedFriendModelList =
-        await profileService.getFriendList();
-    List<FriendRequestModel> fetchedFriendRequestModelList =
-        await profileService.getFriendRequestList();
+  void onAcceptItem(int index, FriendModel friendModel) {
     setState(() {
-      _user = fetchedUserModel;
-      _friendList = fetchedFriendModelList
-          .map((friend) => ListItemModel(
-              id: friend.userId,
-              nickname: friend.nickname,
-              tagId: friend.tagId,
-              iconId: friend.iconId))
-          .toList();
-      _friendRequestList = fetchedFriendRequestModelList
-          .map((request) => ListItemModel(
-              id: request.friendRequestId,
-              nickname: request.nickname,
-              tagId: request.tagId,
-              iconId: request.iconId))
-          .toList();
+      _friendRequestList.removeAt(index);
+      _friendList.insert(0, ListItemModel.fromFriendModel(friendModel));
     });
   }
 
@@ -74,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Positioned(
             top: 0,
             left: 0,
-            child: profileContainer(screenWidth, _user, _friendList.length),
+            child: _profileContainer(screenWidth),
           ),
           Positioned(
               top: 80,
@@ -82,17 +87,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: SizedBox(
                   width: screenWidth,
                   height: screenHeight - 210,
-                  child: friendContainer(context, screenWidth, screenHeight,
-                      _friendList, _friendRequestList)))
+                  child: _friendContainer(context, screenWidth)))
         ],
       ),
     );
   }
 
-  Container profileContainer(
-      double screenWidth, UserModel user, int friendNum) {
-    Widget userIcon = getUserIcon(user.iconId, 0);
-
+  Container _profileContainer(double screenWidth) {
     return Container(
       color: AppColors.primaryPurple,
       width: screenWidth,
@@ -101,15 +102,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            userIcon,
+            getUserIcon(_user.iconId, 0),
             const Padding(padding: EdgeInsets.all(8)),
-            userTextBox(user, friendNum)
+            _userInfoBox()
           ]),
     );
   }
 
-  SizedBox userTextBox(UserModel user, int friendNum) {
-    TextStyle whiteInterSemiBoldTextStyle =
+  SizedBox _userInfoBox() {
+    final textStyle =
         AppFonts.interSemiBold(color: AppColors.white, fontsize: 19);
 
     return SizedBox(
@@ -120,46 +121,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: userInfoTextList(user, whiteInterSemiBoldTextStyle),
+              children: [
+                Text(
+                  _user.nickname,
+                  style: textStyle,
+                ),
+                const Padding(padding: EdgeInsets.all(5)),
+                Text('#${_user.tagId}', style: textStyle.copyWith(fontSize: 16))
+              ],
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
-              children:
-                  friendInfoTextList(friendNum, whiteInterSemiBoldTextStyle),
+              children: [
+                Text('현재 약속 가능한 친구',
+                    style: AppFonts.interLight(
+                        color: AppColors.white, fontsize: 15)),
+                const Padding(padding: EdgeInsets.all(4)),
+                Text('${_friendList.length}명', style: textStyle)
+              ],
             )
           ]),
     );
   }
 
-  List<Widget> userInfoTextList(
-      UserModel user, TextStyle whiteInterSemiBoldTextStyle) {
-    return [
-      Text(
-        user.nickname,
-        style: whiteInterSemiBoldTextStyle,
-      ),
-      const Padding(padding: EdgeInsets.all(5)),
-      Text('#${user.tagId}',
-          style: whiteInterSemiBoldTextStyle.copyWith(fontSize: 16))
-    ];
-  }
-
-  List<Widget> friendInfoTextList(
-      int friendNum, TextStyle whiteInterSemiBoldTextStyle) {
-    return [
-      Text('현재 약속 가능한 친구',
-          style: AppFonts.interLight(color: AppColors.white, fontsize: 15)),
-      const Padding(padding: EdgeInsets.all(4)),
-      Text('$friendNum명', style: whiteInterSemiBoldTextStyle)
-    ];
-  }
-
-  Container friendContainer(
-      BuildContext context,
-      double screenWidth,
-      double screenHeight,
-      List<ListItemModel> friendList,
-      List<ListItemModel> friendRequestList) {
+  Container _friendContainer(BuildContext context, double screenWidth) {
     return Container(
         width: screenWidth,
         decoration: const BoxDecoration(
@@ -171,71 +156,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
         child: Column(children: [
-          friendTabMenu(),
+          _tabMenu(),
           const Padding(padding: EdgeInsets.all(15)),
-          friendTabScreen(context, screenHeight, friendList, friendRequestList)
+          _tabScreen(context)
         ]));
   }
 
-  Row friendTabMenu() {
+  Row _tabMenu() {
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       TabItem(
           text: '친구 목록',
           isSelected: _selectedIndex == 0,
-          onPressed: () {
-            onTabSelected(0);
-          }),
+          onPressed: () => _onTabSelected(0)),
       TabItem(
           text: '친구 요청 목록',
           isSelected: _selectedIndex == 1,
-          onPressed: () {
-            onTabSelected(1);
-          }),
-      appIcon.getAddFriendsIcon(
-          color: AppColors.darkGray, height: 22, width: 22)
+          onPressed: () => _onTabSelected(1)),
+      AppIcon()
+          .getAddFriendsIcon(color: AppColors.darkGray, height: 22, width: 22)
     ]);
   }
 
-  Expanded friendTabScreen(BuildContext context, double screenHeight,
-      List<ListItemModel> friendList, List<ListItemModel> friendRequestList) {
-    List<Widget> listViews = [
-      TabScreen(itemList: friendList, mode: 0),
-      TabScreen(itemList: friendRequestList, mode: 1)
-    ];
+  Expanded _tabScreen(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final items = _selectedIndex == 0 ? _friendList : _friendRequestList;
 
     return Expanded(
         child: SingleChildScrollView(
             child: SizedBox(
-      height: screenHeight - 343,
-      child: listViews[_selectedIndex],
-    )));
-  }
-
-  void showAcceptDialog(BuildContext context, String friendName) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('친구 추가'),
-          content: Text('$friendName을/를 친구로 추가하시겠습니까?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                // 친구 추가 api 호출
-                Navigator.pop(context);
-              },
-              child: Text('승낙'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('취소'),
-            ),
-          ],
-        );
-      },
-    );
+                height: screenHeight - 343,
+                child: ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListItem(
+                        item: items[index],
+                        index: index,
+                        mode: _selectedIndex,
+                        onRemoveItem: onRemoveItem,
+                        onAcceptItem: onAcceptItem);
+                  },
+                ))));
   }
 }
 
@@ -256,9 +216,10 @@ class TabItem extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         decoration: BoxDecoration(
-            border: isSelected
-                ? const Border(bottom: BorderSide(color: AppColors.darkGray))
-                : const Border(bottom: BorderSide.none)),
+            border: Border(
+                bottom: isSelected
+                    ? const BorderSide(color: AppColors.darkGray)
+                    : BorderSide.none)),
         child: Text(
           text,
           style: AppFonts.interLight(color: AppColors.darkGray, fontsize: 20),
@@ -268,28 +229,26 @@ class TabItem extends StatelessWidget {
   }
 }
 
-class TabScreen extends StatelessWidget {
-  final List<ListItemModel> itemList;
+class ListItem extends StatelessWidget {
+  final ListItemModel item;
+  final int index;
   final int mode;
+  final Function(int) onRemoveItem;
+  final Function(int, FriendModel) onAcceptItem;
 
-  const TabScreen({super.key, required this.itemList, required this.mode});
+  final borderSide = const BorderSide(width: 0.5, color: AppColors.gray);
+
+  const ListItem(
+      {Key? key,
+      required this.item,
+      required this.index,
+      required this.mode,
+      required this.onRemoveItem,
+      required this.onAcceptItem})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: itemList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return listItem(context, index, itemList[index], mode);
-      },
-    );
-  }
-
-  Container listItem(
-      BuildContext context, int index, ListItemModel user, int mode) {
-    final grayInterSemiBoldTextStyle =
-        AppFonts.interSemiBold(color: AppColors.darkGray, fontsize: 20);
-    const borderSide = BorderSide(width: 0.5, color: AppColors.gray);
-
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
@@ -300,40 +259,83 @@ class TabScreen extends StatelessWidget {
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-        leading: getUserIcon(user.iconId, 1),
+        leading: getUserIcon(item.iconId, 1),
         title: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
           Text(
-            user.nickname,
-            style: grayInterSemiBoldTextStyle,
+            item.nickname,
+            style:
+                AppFonts.interSemiBold(color: AppColors.darkGray, fontsize: 20),
           ),
           const Padding(padding: EdgeInsets.all(3)),
           Text(
-            '#${user.tagId}',
-            style: grayInterSemiBoldTextStyle.copyWith(fontSize: 17),
+            '#${item.tagId}',
+            style:
+                AppFonts.interSemiBold(color: AppColors.darkGray, fontsize: 17),
           ),
         ]),
-        trailing: button(mode),
+        trailing: _button(context),
       ),
     );
   }
 
-  TextButton button(int mode) {
-    List<Color> colorList = [AppColors.primaryRed, AppColors.primaryPurple];
-    List<String> stringList = ['삭제', '승낙'];
+  TextButton _button(BuildContext context) {
+    final buttonColor =
+        mode == 0 ? AppColors.primaryRed : AppColors.primaryPurple;
+    final buttonText = mode == 0 ? '삭제' : '승낙';
 
     return TextButton(
-      onPressed: () {},
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: colorList[mode],
+        onPressed: () {
+          _showAlertDialog(context, buttonText);
+        },
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: buttonColor,
         ),
         child: Text(
-          stringList[mode],
+          buttonText,
           style: AppFonts.interLight(color: AppColors.white, fontsize: 15),
-        ),
-      ),
+        ));
+  }
+
+  void _showAlertDialog(BuildContext context, String buttonText) {
+    final dialogText = mode == 0 ? '친구 삭제' : '친구 추가';
+    final dialogContextText = mode == 0 ? '친구에서 삭제' : '친구로 추가';
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(dialogText),
+          content: Text('${item.nickname}님을 $dialogContextText하시겠습니까?'),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                if (mode == 0) {
+                  ProfileService().deleteFriend(item.id);
+                  onRemoveItem(index);
+                } else {
+                  FriendModel friendModel =
+                      await ProfileService().acceptFriend(item.id);
+                  onAcceptItem(index, friendModel);
+                }
+                if (context.mounted) {
+                  Navigator.pop(context);
+                }
+              },
+              child: Text(buttonText),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('취소'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -350,6 +352,20 @@ class ListItemModel {
     required this.tagId,
     required this.iconId,
   });
+
+  ListItemModel.fromFriendModel(FriendModel friendModel) {
+    id = friendModel.userId;
+    nickname = friendModel.nickname;
+    tagId = friendModel.tagId;
+    iconId = friendModel.iconId;
+  }
+
+  ListItemModel.fromFriendRequestModel(FriendRequestModel friendRequestModel) {
+    id = friendRequestModel.friendRequestId;
+    nickname = friendRequestModel.nickname;
+    tagId = friendRequestModel.tagId;
+    iconId = friendRequestModel.iconId;
+  }
 }
 
 Widget getUserIcon(int iconId, int mode) {
