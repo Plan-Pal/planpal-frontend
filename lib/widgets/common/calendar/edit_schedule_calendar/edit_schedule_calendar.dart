@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:planpal_frontend/themes/colors.dart';
-import 'package:planpal_frontend/widgets/common/home_page/calendar/days_grid.dart';
-import 'package:planpal_frontend/widgets/common/home_page/calendar/month_app_bar.dart';
-import 'package:planpal_frontend/widgets/common/home_page/calendar/week_days_row.dart';
+import 'package:planpal_frontend/widgets/common/calendar/edit_schedule_calendar/edit_schedule_days_grid.dart';
+import 'package:planpal_frontend/widgets/common/calendar/edit_schedule_calendar/edit_schedule_month_app_bar.dart';
+import 'package:planpal_frontend/widgets/common/calendar/edit_schedule_calendar/edit_schedule_week_days_row.dart';
 
-class CustomCalendar extends StatefulWidget {
+class EditScheduleCalendar extends StatefulWidget {
   final ValueChanged<DateTime> onDateSelected;
   final List<Map<String, dynamic>> schedules;
 
-  CustomCalendar({required this.onDateSelected, required this.schedules});
+  EditScheduleCalendar({required this.onDateSelected, required this.schedules});
 
   @override
-  _CustomCalendarState createState() => _CustomCalendarState();
+  _EditScheduleCalendarState createState() => _EditScheduleCalendarState();
 }
 
-class _CustomCalendarState extends State<CustomCalendar> {
+class _EditScheduleCalendarState extends State<EditScheduleCalendar> {
   DateTime _selectedDate = DateTime.now();
 
   void _onMonthChanged(DateTime date) {
@@ -29,15 +29,14 @@ class _CustomCalendarState extends State<CustomCalendar> {
       color: AppColors.white,
       child: Column(
         children: [
-          MonthAppBar(
+          EditScheduleMonthAppBar(
             selectedDate: _selectedDate,
             onMonthChanged: _onMonthChanged,
           ),
-          WeekDaysRow(),
-          DaysGrid(
+          EditScheduleWeekDaysRow(),
+          EditScheduleDaysGrid(
             selectedDate: _selectedDate,
             onDateSelected: widget.onDateSelected,
-            schedules: widget.schedules,
           ),
         ],
       ),

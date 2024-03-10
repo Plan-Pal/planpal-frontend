@@ -14,22 +14,28 @@ class NewScheduleListPageHeader extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      centerTitle: false,
-      title: Row(
+    return Container(
+      height: preferredSize.height,
+      color: AppColors.extraLightGray,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text('새로운 약속',
-              style: AppFonts.interSemiBold(
-                  color: AppColors.darkGray, fontsize: 20)),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Text('새로운 약속',
+                style: AppFonts.interSemiBold(
+                    color: AppColors.darkGray, fontsize: 20)),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: IconButton(
+              icon: AppIcon().getReloadIcon(
+                  color: AppColors.darkGray, height: 20, width: 20),
+              onPressed: () {},
+            ),
+          ),
         ],
       ),
-      actions: <Widget>[
-        IconButton(
-          icon: AppIcon()
-              .getReloadIcon(color: AppColors.darkGray, height: 20, width: 20),
-          onPressed: () {},
-        ),
-      ],
     );
   }
 }
