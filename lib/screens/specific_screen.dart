@@ -4,13 +4,17 @@ import 'package:planpal_frontend/widgets/common/schedule/specific_schedules/spec
 import 'package:planpal_frontend/widgets/scaffolds/headers/specificschedulepageheader.dart';
 
 class SpecificScheduleScreen extends StatelessWidget {
+  final int scheduleId;
+
+  SpecificScheduleScreen({required this.scheduleId});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SpecificSchedulePageHeader(),
       body: Column(
         children: <Widget>[
-          SpecificScheduleInfo(),
+          SpecificScheduleInfo(scheduleId: scheduleId),
           const Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -19,7 +23,7 @@ class SpecificScheduleScreen extends StatelessWidget {
               scheduleDeleteButton(),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
         ],
       ),
     );
