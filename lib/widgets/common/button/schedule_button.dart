@@ -61,3 +61,43 @@ Container scheduleAddButton() {
     ),
   );
 }
+
+Container scheduleAcceptButton() {
+  return Container(
+    width: 170,
+    child: ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        primary: AppColors.primaryLime,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        child: Text('약속 수락',
+            style: AppFonts.interRegular(color: AppColors.white, fontsize: 14)),
+      ),
+    ),
+  );
+}
+
+Container scheduleRefuseButton() {
+  return Container(
+    width: 170,
+    child: ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        primary: AppColors.primaryRed,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        child: Text('약속 거절',
+            style: AppFonts.interRegular(color: AppColors.white, fontsize: 14)),
+      ),
+    ),
+  );
+}

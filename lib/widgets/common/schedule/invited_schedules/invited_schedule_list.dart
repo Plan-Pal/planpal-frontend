@@ -50,6 +50,7 @@ class NewScheduleList extends StatelessWidget {
                       title: schedule['title'],
                       time: schedule['appointed_time'],
                       location: schedule['place'],
+                      scheduleId: schedule['schedule_id'],
                     ),
                   );
                 },
