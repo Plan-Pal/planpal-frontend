@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:planpal_frontend/api/storage_service.dart';
 import 'package:planpal_frontend/api/user_auth_service.dart';
 import 'package:planpal_frontend/models/schedule_model/all_schedule_list_model.dart';
@@ -58,6 +57,11 @@ class ScheduleService {
 
   Future<Map<String, dynamic>> getSpecificSchedule(int scheduleId) async {
     Response response = await dio.get("/schedules/$scheduleId");
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>> getInvitedSchedules() async {
+    Response response = await dio.get("/schedules/invited");
     return response.data;
   }
 }
