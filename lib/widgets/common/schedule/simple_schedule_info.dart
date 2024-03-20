@@ -6,15 +6,18 @@ import 'package:planpal_frontend/themes/colors.dart';
 import 'package:planpal_frontend/themes/icons.dart';
 
 class InfoContainer extends StatelessWidget {
+  final int scheduleId;
   final String title;
   final String time;
   final String location;
 
   const InfoContainer(
-      {super.key,
+      {Key? key,
+      required this.scheduleId,
       required this.title,
       required this.time,
-      required this.location});
+      required this.location})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,9 @@ class InfoContainer extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SpecificScheduleScreen()),
+          MaterialPageRoute(
+              builder: (context) =>
+                  SpecificScheduleScreen(scheduleId: scheduleId)),
         );
       },
       child: Center(

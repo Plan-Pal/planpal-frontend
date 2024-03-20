@@ -3,10 +3,10 @@ import 'package:planpal_frontend/widgets/common/button/schedule_button.dart';
 import 'package:planpal_frontend/widgets/common/schedule/specific_schedules/specific_schedule_info.dart';
 import 'package:planpal_frontend/widgets/scaffolds/headers/specificschedulepageheader.dart';
 
-class SpecificScheduleScreen extends StatelessWidget {
+class InvitedSpecificScheduleScreen extends StatelessWidget {
   final int scheduleId;
 
-  SpecificScheduleScreen({required this.scheduleId});
+  InvitedSpecificScheduleScreen({required this.scheduleId});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +19,8 @@ class SpecificScheduleScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              scheduleEditButton(),
-              scheduleDeleteButton(),
+              scheduleAcceptButton(),
+              scheduleRefuseButton(),
             ],
           ),
           const SizedBox(height: 20),

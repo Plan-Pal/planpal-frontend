@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planpal_frontend/api/mock_api_service.dart';
+import 'package:planpal_frontend/api/schedule_service.dart';
 import 'package:planpal_frontend/themes/colors.dart';
 import 'package:planpal_frontend/widgets/common/calendar/home_calendar.dart';
 import 'package:planpal_frontend/widgets/common/schedule/simple_schedule_info.dart';
@@ -30,19 +30,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _fetchAndSetSchedules() async {
-    final apiService = MockApiService();
+    final apiService = ScheduleService();
     final scheduleData = await apiService.getSchedules();
-    final scheduleList = scheduleData['result']['schedules'] as List;
+    final scheduleList = scheduleData.schedules;
 
     setState(() {
       infoContainers = scheduleList.map((schedule) {
         return InfoContainer(
-          title: schedule['title'],
-          time: schedule['appointed_time'],
-          location: schedule['place'],
+          scheduleId: schedule.scheduleId,
+          title: schedule.title,
+          time: schedule.appointedTime.toIso8601String(),
+          location: schedule.place,
         );
       }).toList();
-      schedules = List<Map<String, dynamic>>.from(scheduleList);
+      schedules = scheduleList.map((schedule) => schedule.toJson()).toList();
     });
   }
 
