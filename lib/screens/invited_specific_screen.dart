@@ -22,7 +22,7 @@ class InvitedSpecificScheduleScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               scheduleAcceptButton(context, scheduleId, scheduleService),
-              scheduleRefuseButton(),
+              scheduleRefuseButton(context, scheduleId, scheduleService),
             ],
           ),
           const SizedBox(height: 20),

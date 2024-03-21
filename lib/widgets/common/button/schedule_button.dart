@@ -89,11 +89,16 @@ Container scheduleAcceptButton(
   );
 }
 
-Container scheduleRefuseButton() {
+Container scheduleRefuseButton(
+    BuildContext context, scheduleId, ScheduleService scheduleService) {
   return Container(
     width: 170,
     child: ElevatedButton(
-      onPressed: () {},
+      onPressed: () async {
+        int statusCode =
+            await scheduleService.refuseSchedule(scheduleId) as int;
+        if (statusCode == 200) {}
+      },
       style: ElevatedButton.styleFrom(
         primary: AppColors.primaryRed,
         shape: RoundedRectangleBorder(

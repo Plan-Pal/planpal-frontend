@@ -69,4 +69,9 @@ class ScheduleService {
     Response response = await dio.post("/schedules/accept/$scheduleId");
     return response.statusCode;
   }
+
+  Future<int?> refuseSchedule(int scheduleId) async {
+    Response response = await dio.delete("/schedules/refuse/$scheduleId");
+    return response.statusCode;
+  }
 }
