@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:planpal_frontend/api/schedule_service.dart';
+import 'package:planpal_frontend/screens/home_screen.dart';
 import 'package:planpal_frontend/themes/colors.dart';
 import 'package:planpal_frontend/themes/fonts.dart';
 
@@ -62,11 +64,16 @@ Container scheduleAddButton() {
   );
 }
 
-Container scheduleAcceptButton() {
+Container scheduleAcceptButton(
+    BuildContext context, scheduleId, ScheduleService scheduleService) {
   return Container(
     width: 170,
     child: ElevatedButton(
-      onPressed: () {},
+      onPressed: () async {
+        int statusCode =
+            await scheduleService.acceptSchedule(scheduleId) as int;
+        if (statusCode == 200) {}
+      },
       style: ElevatedButton.styleFrom(
         primary: AppColors.primaryLime,
         shape: RoundedRectangleBorder(
