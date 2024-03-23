@@ -3,6 +3,7 @@ import 'package:planpal_frontend/api/profile_service.dart';
 import 'package:planpal_frontend/models/friend_model.dart';
 import 'package:planpal_frontend/models/friend_request_model.dart';
 import 'package:planpal_frontend/models/user_model.dart';
+import 'package:planpal_frontend/screens/search_friend_screen.dart';
 import 'package:planpal_frontend/themes/colors.dart';
 import 'package:planpal_frontend/themes/fonts.dart';
 import 'package:planpal_frontend/themes/icons.dart';
@@ -36,7 +37,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _fetchFromServer() async {
     final user = await profileService.getUserInfo();
     final friendList = await profileService.getFriendList();
-    final friendRequestList = await profileService.getFriendRequestList();
+    final friendRequestList =
+        await profileService.getReceivedFriendRequestList();
     setState(() {
       _user = user;
       _friendList = friendList
@@ -172,8 +174,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
           text: '친구 요청 목록',
           isSelected: _selectedIndex == 1,
           onPressed: () => _onTabSelected(1)),
-      AppIcon()
-          .getAddFriendsIcon(color: AppColors.darkGray, height: 22, width: 22)
+      IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const SearchFriendScreen()),
+            );
+          },
+          icon: AppIcon().getAddFriendsIcon(
+              color: AppColors.darkGray, height: 22, width: 22))
     ]);
   }
 
