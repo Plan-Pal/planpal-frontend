@@ -11,10 +11,17 @@ class FriendRequestModel {
     required this.iconId,
   });
 
-  FriendRequestModel.fromJson(Map<String, dynamic>? map) {
+  FriendRequestModel.fromReceivedJson(Map<String, dynamic>? map) {
     friendRequestId = BigInt.from(map?['friend_request_id']);
     nickname = map?['sender_nickname'];
     tagId = map?['sender_tag_id'];
     iconId = map?['sender_icon_id'];
+  }
+
+  FriendRequestModel.fromSentJson(Map<String, dynamic>? map) {
+    friendRequestId = BigInt.from(map?['friend_request_id']);
+    nickname = map?['receiver_nickname'];
+    tagId = map?['receiver_tag_id'];
+    iconId = map?['receiver_icon_id'];
   }
 }

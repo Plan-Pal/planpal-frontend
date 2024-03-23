@@ -15,6 +15,7 @@ class AppliedFriendsListPageHeader extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: AppColors.white,
       centerTitle: true,
       title: Text('친구 신청 목록',
           style:
@@ -22,7 +23,9 @@ class AppliedFriendsListPageHeader extends StatelessWidget
       leading: IconButton(
         icon: AppIcon()
             .getBackIcon(color: AppColors.darkGray, height: 15, width: 18),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pop(context);
+        },
       ),
       actions: const <Widget>[],
     );
