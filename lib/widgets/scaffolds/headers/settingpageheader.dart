@@ -14,6 +14,7 @@ class SettingPageHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: AppColors.white,
       centerTitle: true,
       title: Text('설정',
           style:
@@ -21,7 +22,9 @@ class SettingPageHeader extends StatelessWidget implements PreferredSizeWidget {
       leading: IconButton(
         icon: AppIcon()
             .getBackIcon(color: AppColors.darkGray, height: 15, width: 18),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pop(context);
+        },
       ),
       actions: const <Widget>[],
     );

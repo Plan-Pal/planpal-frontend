@@ -56,17 +56,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  void onRemoveItem(int index) {
+  void _onRemoveItem(int index) {
     setState(() {
       _friendList.removeAt(index);
     });
   }
 
-  void onAcceptItem(int index, FriendModel friendModel) {
+  void _onAcceptItem(int index, FriendModel friendModel) {
     setState(() {
       _friendRequestList.removeAt(index);
       _friendList.insert(0, ListItemModel.fromFriendModel(friendModel));
     });
+  }
+
+  void _reload() {
+    setState(() {});
   }
 
   @override
@@ -75,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: const ProfilePageHeader(),
+      appBar: ProfilePageHeader(user: _user, reload: _reload),
       body: Stack(
         children: [
           Positioned(
@@ -202,8 +206,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         item: items[index],
                         index: index,
                         mode: _selectedIndex,
-                        onRemoveItem: onRemoveItem,
-                        onAcceptItem: onAcceptItem);
+                        onRemoveItem: _onRemoveItem,
+                        onAcceptItem: _onAcceptItem);
                   },
                 ))));
   }
