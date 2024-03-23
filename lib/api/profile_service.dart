@@ -14,7 +14,7 @@ class ProfileService {
 
   ProfileService() {
     dio = Dio(BaseOptions(
-      baseUrl: 'http://172.30.1.30:8080',
+      baseUrl: 'http://172.30.1.28:8080',
       connectTimeout: const Duration(milliseconds: 5000),
       receiveTimeout: const Duration(milliseconds: 3000),
     ));
@@ -107,5 +107,9 @@ class ProfileService {
 
   Future<void> deleteFriend(BigInt userId) async {
     await dio.delete('/friends', data: {'user_id': '$userId'});
+  }
+
+  Future<void> updateUser(String nickname, int iconId) async {
+    await dio.patch('/users', data: {'nickname': nickname, 'icon_id': iconId});
   }
 }
