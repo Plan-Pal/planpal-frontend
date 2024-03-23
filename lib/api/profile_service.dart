@@ -64,19 +64,48 @@ class ProfileService {
     return jsonList.map((json) => FriendModel.fromJsonList(json)).toList();
   }
 
-  Future<List<FriendRequestModel>> getFriendRequestList() async {
+  Future<List<FriendRequestModel>> getReceivedFriendRequestList() async {
     Response response = await dio.get("/friends/request/received");
     List<dynamic> jsonList = response.data['result'];
-    return jsonList.map((json) => FriendRequestModel.fromJson(json)).toList();
+    return jsonList
+        .map((json) => FriendRequestModel.fromReceivedJson(json))
+        .toList();
   }
 
-  Future<void> deleteFriend(BigInt userId) async {
-    await dio.delete('/friends', data: {'user_id': '$userId'});
+  Future<List<FriendRequestModel>> getSentFriendRequestList() async {
+    Response response = await dio.get("/friends/request/sent");
+    List<dynamic> jsonList = response.data['result'];
+    return jsonList
+        .map((json) => FriendRequestModel.fromSentJson(json))
+        .toList();
+  }
+
+  Future<void> deleteFriendRequest(BigInt friendRequestId) async {
+    await dio.delete('/friends/request',
+        data: {'friend_request_id': '$friendRequestId'});
+  }
+
+  Future<String> sendFriendRequest(BigInt friendId) async {
+    try {
+      await dio.post('/friends/request', data: {'user_id': '$friendId'});
+      return "친구 신청이 완료되었습니다.";
+    } on DioException catch (e) {
+      if (e.response != null) {
+        return e.response!.data['message'];
+      }
+      return "친구 신청이 불가합니다. 다음에 다시 시도해주세요.";
+    } catch (e) {
+      return "친구 신청이 불가합니다. 다음에 다시 시도해주세요.";
+    }
   }
 
   Future<FriendModel> acceptFriend(BigInt friendRequestId) async {
     Response response = await dio
         .post('/friends', data: {'friend_request_id': '$friendRequestId'});
     return FriendModel.fromJson(response.data);
+  }
+
+  Future<void> deleteFriend(BigInt userId) async {
+    await dio.delete('/friends', data: {'user_id': '$userId'});
   }
 }

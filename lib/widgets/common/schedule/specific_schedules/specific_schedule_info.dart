@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:planpal_frontend/api/mock_api_service.dart';
+import 'package:planpal_frontend/api/schedule_service.dart';
 import 'package:planpal_frontend/themes/colors.dart';
 import 'package:planpal_frontend/themes/fonts.dart';
 import 'package:planpal_frontend/widgets/common/user/simple_user_container.dart';
 
 class SpecificScheduleInfo extends StatefulWidget {
+  final int scheduleId;
+
+  SpecificScheduleInfo({required this.scheduleId});
+
   @override
   _SpecificScheduleInfoState createState() => _SpecificScheduleInfoState();
 }
@@ -16,7 +21,7 @@ class _SpecificScheduleInfoState extends State<SpecificScheduleInfo> {
   @override
   void initState() {
     super.initState();
-    futureSchedule = MockApiService().getSpecificSchedule(1);
+    futureSchedule = ScheduleService().getSpecificSchedule(widget.scheduleId);
   }
 
   Text lightStyle(String text) {

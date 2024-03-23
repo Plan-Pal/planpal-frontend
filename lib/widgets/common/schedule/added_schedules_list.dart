@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:planpal_frontend/api/mock_api_service.dart';
+import 'package:planpal_frontend/api/schedule_service.dart';
+import 'package:planpal_frontend/models/schedule_model/all_schedule_list_model.dart';
 import 'package:planpal_frontend/widgets/common/row/new_schedule_row.dart';
 import 'package:planpal_frontend/widgets/common/schedule/simple_schedule_info.dart';
 
@@ -12,7 +13,7 @@ class AddedScheduleList extends StatefulWidget {
 }
 
 class _ScheduleListState extends State<AddedScheduleList> {
-  final MockApiService apiService = MockApiService();
+  final ScheduleService apiService = ScheduleService();
   int _selectedSection = 0;
 
   @override
@@ -28,24 +29,21 @@ class _ScheduleListState extends State<AddedScheduleList> {
         ),
         const SizedBox(height: 20.0),
         Expanded(
-          child: FutureBuilder<Map<String, dynamic>>(
-            future: apiService.getAddedSchedules(),
+          child: FutureBuilder<AllScheduleListModel>(
+            future: apiService.getSchedules(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else {
-                final schedules = snapshot.data!['result']['schedules'];
+                final schedules = snapshot.data!.schedules;
                 final now = DateTime.now();
-                final upcomingSchedules = schedules
-                    .where((schedule) =>
-                        DateTime.parse(schedule['appointed_time']).isAfter(now))
-                    .toList();
                 final pastSchedules = schedules
-                    .where((schedule) =>
-                        DateTime.parse(schedule['appointed_time'])
-                            .isBefore(now))
+                    .where((schedule) => schedule.appointedTime.isAfter(now))
+                    .toList();
+                final upcomingSchedules = schedules
+                    .where((schedule) => schedule.appointedTime.isBefore(now))
                     .toList();
                 final displaySchedules =
                     _selectedSection == 1 ? upcomingSchedules : pastSchedules;
@@ -56,9 +54,10 @@ class _ScheduleListState extends State<AddedScheduleList> {
                   itemBuilder: (context, index) {
                     final schedule = displaySchedules[index];
                     return InfoContainer(
-                      title: schedule['title'],
-                      time: schedule['appointed_time'],
-                      location: schedule['place'],
+                      scheduleId: schedule.scheduleId,
+                      title: schedule.title,
+                      time: schedule.appointedTime.toIso8601String(),
+                      location: schedule.place,
                     );
                   },
                 );
